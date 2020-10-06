@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, session, logging, url_for, redirect
-from sqlaclhemy import create_engine
-from sqlaclhemy.orm import scoped_session, sessionmaker
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return 'Olá Mundo!'
+    return render_template('home.html')
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

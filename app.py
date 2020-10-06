@@ -1,4 +1,5 @@
 import pymysql
+from functools import wraps
 from flask import Flask, render_template, request, session, logging, url_for, redirect, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -10,12 +11,23 @@ db = scoped_session(sessionmaker(bind=engine))
 
 app = Flask(__name__)
 
+#login requered
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash("Login necessário!", 'danger')
+            return redirect(url_for('login'))
+    return wrap
+    #return decorated_function
+
+
 @app.route("/")
 @app.route("/home")
 def index():
     return render_template('home.html')
-
-
 
 #registration form
 @app.route("/register", methods=["GET", "POST"])
@@ -69,11 +81,13 @@ def login():
 
 #usuario
 @app.route("/usuario")
+@login_required
 def usuario_logado():
     return render_template("usuario.html")
 
 #logout
 @app.route("/logout")
+@login_required
 def logout():
     session.clear()
     flash("Você está deslogado!", "success")

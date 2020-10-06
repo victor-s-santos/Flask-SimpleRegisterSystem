@@ -72,6 +72,12 @@ def login():
 def usuario_logado():
     return render_template("usuario.html")
 
+#logout
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("Você está deslogado!", "success")
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.secret_key = "flaskehdemais"

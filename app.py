@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, session, logging, url_for, redirect
+import pymysql
+from flask import Flask, render_template, request, session, logging, url_for, redirect, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from passlib.hash import sha256_crypt
+
+engine = create_engine("mysql+pymysql://root:senha@localhost/registro")
+                        #mysql+pymysql://usuario:senha@localhost/nome_do_bancodedados
+db = scoped_session(sessionmaker(bind=engine))
 
 app = Flask(__name__)
 
@@ -23,11 +28,12 @@ def register():
         secure_password = sha256_crypt.encrypt(str(senha))
 
         if senha == confirma:
-            db.execute("INSERT INTO usuarios(nome, usuario, senha) VALUES(:nome, :usuario, :senha)",
+            db.execute("INSERT INTO usuarios2(nome, usuario, senha) VALUES(:nome, :usuario, :senha)",
                                             {"nome":nome, "usuario":usuario, "senha":secure_password})
             db.commit()
             return redirect(url_for('login'))
         else:
+            flash("Infelizmente as senhas não conferem!", "danger")
             return render_template("register.html")
 
     return render_template("register.html")

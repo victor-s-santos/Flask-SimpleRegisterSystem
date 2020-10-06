@@ -56,6 +56,7 @@ def login():
         else:
             for s in senha_get:
                 if sha256_crypt.verify(senha, s):
+                    session["log"] = True
                     flash("Você está logado!", "success")
                     return redirect(url_for("usuario_logado"))
                 else:

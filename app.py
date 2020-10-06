@@ -47,4 +47,5 @@ def login():
         return(request.method)
 
 if __name__ == "__main__":
+    app.secret_key = "flaskehdemais"
     app.run(debug=True)

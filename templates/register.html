@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="container">
+    <h2>Register</h2>
+    <form action="" method="POST">
+        <div class="form-group">
+            <input type="text" name="nome" class="form-control" placeholder="Seu nome aqui" required>
+        </div>
+        <div class="form-group">
+            <input type="text" name="usuario" class="form-control" placeholder="Nome de usuário aqui" required>
+        </div>
+        <div class="form-group">
+            <label>Senha:</label>
+            <input type="password" name="senha" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Confirma a Senha:</label>
+            <input type="password" name="confirm" class="form-control" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Cadastrar</button>
+    </form>
+</div>
+
+{% endblock %}

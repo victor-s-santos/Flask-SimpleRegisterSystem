@@ -31,6 +31,7 @@ def register():
             db.execute("INSERT INTO usuarios2(nome, usuario, senha) VALUES(:nome, :usuario, :senha)",
                                             {"nome":nome, "usuario":usuario, "senha":secure_password})
             db.commit()
+            flash("Usuário registrado com sucesso, já é possível realizar o Login!", "success")
             return redirect(url_for('login'))
         else:
             flash("Infelizmente as senhas não conferem!", "danger")
@@ -39,12 +40,12 @@ def register():
     return render_template("register.html")
 
 #login form
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         return render_template("login.html")
     else:
-        return(request.method)
+        return render_template("login.html")
 
 if __name__ == "__main__":
     app.secret_key = "flaskehdemais"

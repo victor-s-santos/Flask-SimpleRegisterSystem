@@ -57,7 +57,7 @@ def login():
             for s in senha_get:
                 if sha256_crypt.verify(senha, s):
                     flash("Você está logado!", "success")
-                    return redirect(url_for('home'))
+                    return redirect(url_for("usuario_logado"))
                 else:
                     flash("Senha incorreta!", "danger")
                     return render_template("login.html")
@@ -65,6 +65,12 @@ def login():
         return render_template("login.html")
     else:
         return render_template("login.html")
+
+#usuario
+@app.route("/usuario")
+def usuario_logado():
+    return render_template("usuario.html")
+
 
 if __name__ == "__main__":
     app.secret_key = "flaskehdemais"

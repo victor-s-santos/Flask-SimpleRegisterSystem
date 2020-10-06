@@ -11,6 +11,7 @@ db = scoped_session(sessionmaker(bind=engine))
 app = Flask(__name__)
 
 @app.route("/")
+@app.route("/home")
 def index():
     return render_template('home.html')
 
@@ -43,6 +44,24 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        usuario = request.form.get("usuario")
+        senha = request.form.get("senha")
+
+        usuario_get = db.execute("SELECT usuario FROM usuarios2 WHERE usuario=:usuario", {"usuario": usuario}).fetchone()
+        senha_get = db.execute("SELECT senha FROM usuarios2 WHERE usuario=:usuario", {"usuario": usuario}).fetchone()
+
+        if usuario_get is None:
+            flash("Usuário não encontrado!", "danger")
+            return render_template("login.html")
+        else:
+            for s in senha_get:
+                if sha256_crypt.verify(senha, s):
+                    flash("Você está logado!", "success")
+                    return redirect(url_for('home'))
+                else:
+                    flash("Senha incorreta!", "danger")
+                    return render_template("login.html")
+
         return render_template("login.html")
     else:
         return render_template("login.html")
